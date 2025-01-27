@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package habit;
+
+option go_package = "habit-service/proto;habit";
+
+service HabitService {
+    rpc CreateHabit(CreateHabitRequest) returns (CreateHabitResponse);
+    rpc GetHabits(GetHabitsRequest) returns (GetHabitsResponse);
+    rpc UpdateHabit(UpdateHabitRequest) returns (UpdateHabitResponse);
+    rpc DeleteHabit(DeleteHabitRequest) returns (DeleteHabitResponse);
+}
+
+
+message CreateHabitRequest {
+    string user_id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+message CreateHabitResponse{
+   string habit_id = 1;
+}
+
+message GetHabitsRequest {
+    string user_id = 1;
+}
+
+message GetHabitsResponse {
+    repeated Habit habits = 1;
+}
+
+
+message UpdateHabitRequest {
+    string habit_id = 1;
+    string name = 2;
+    string description = 3;
+    int32 streak = 4;
+}
+
+message UpdateHabitResponse {
+    string message = 1;
+}
+
+message DeleteHabitRequest {
+    string habit_id = 1;
+}
+
+message DeleteHabitResponse {
+    string message = 1;
+}
+
+message Habit {
+    string habit_id = 1;
+    string user_id = 2;
+    string name = 3;
+    string description = 4;
+    int32 streak = 5;
+}
