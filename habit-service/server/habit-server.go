@@ -43,3 +43,12 @@ func (s *HabitServer) GetHabits(ctx context.Context, req *pb.GetHabitsRequest) (
 
 	return &pb.GetHabitsResponse{Habits: pbHabits}, nil
 }
+
+func (s *HabitServer) DeleteHabit(ctx context.Context, req *pb.DeleteHabitRequest) (*pb.DeleteHabitResponse, error) {
+	err := s.repo.DeleteHabit(ctx, req.HabitId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to delete habit %v", err)
+	}
+
+	return &pb.DeleteHabitResponse{Message: "Habit deleted Successfully"}, nil
+}

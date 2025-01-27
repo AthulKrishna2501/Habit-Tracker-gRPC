@@ -30,25 +30,24 @@ func NewUserRepository(dbURL string) (*UserRepository, error) {
 }
 
 func (r *UserRepository) CreateUser(ctx context.Context, name, email string) (string, error) {
+
 	id := uuid.NewString()
 
 	if r.conn == nil {
 		return "", fmt.Errorf("r.conn is missing")
 	}
 
-	user := User{
+	newUser := User{
 		ID:    id,
 		Name:  name,
 		Email: email,
 	}
-	fmt.Printf("Creating user with ID: %s, Name: %s, Email: %s\n", user.ID, user.Name, user.Email)
-	err := r.conn.Create(&user).Error
+	fmt.Printf("Creating user with ID: %s, Name: %s, Email: %s\n", newUser.ID, newUser.Name, newUser.Email)
+	result := r.conn.Create(&newUser)
 
-	fmt.Println("Database connection", r.conn)
-
-	if err != nil {
-		fmt.Printf("Error details: %v\n", err)
-		return "", fmt.Errorf("failed to create user: %v", err)
+	if result.Error != nil {
+		fmt.Printf("Error details: %v\n", result.Error)
+		return "", fmt.Errorf("failed to create user: %v", result.Error)
 	}
 	return id, nil
 }

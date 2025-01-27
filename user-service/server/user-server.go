@@ -18,6 +18,7 @@ func NewUserServer(repo *db.UserRepository) *UserServer {
 
 func (s *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
 	userID, err := s.repo.CreateUser(ctx, req.Name, req.Email)
+
 	if err != nil {
 		return nil, fmt.Errorf("cannot create user %v", err)
 	}

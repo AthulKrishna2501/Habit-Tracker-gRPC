@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
@@ -46,6 +47,9 @@ func (r *HabitRepository) CreateHabit(ctx context.Context, UserID, name, descrip
 		return "", fmt.Errorf("cannot create habit %v", err)
 	}
 
+	log.Printf("Creating habit for userID: %s", UserID)
+	log.Print("NewHabit:", newHabit)
+
 	return id, nil
 
 }
@@ -58,6 +62,8 @@ func (r *HabitRepository) GetHabits(ctx context.Context, UserID string) ([]Habit
 		return nil, fmt.Errorf("failed to get habits %v", err)
 	}
 
+	log.Print("Retriving habits for user; %s", UserID)
+	log.Print("Habits: ", habit)
 	return habit, nil
 
 }
@@ -81,7 +87,7 @@ func (r *HabitRepository) UpdateHabit(ctx context.Context, id, name, description
 func (r *HabitRepository) DeleteHabit(ctx context.Context, id string) error {
 	var habit Habit
 
-	err := r.conn.Delete(&habit).Where("id=?", id)
+	err := r.conn.Where("id=?", id).Delete(&habit).Error
 	if err != nil {
 		return fmt.Errorf("failed to delete habit %v", err)
 	}
