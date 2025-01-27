@@ -62,7 +62,7 @@ func (r *HabitRepository) GetHabits(ctx context.Context, UserID string) ([]Habit
 		return nil, fmt.Errorf("failed to get habits %v", err)
 	}
 
-	log.Print("Retriving habits for user; %s", UserID)
+	log.Printf("Retriving habits for user; %s", UserID)
 	log.Print("Habits: ", habit)
 	return habit, nil
 
